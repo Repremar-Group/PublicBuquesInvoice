@@ -1,0 +1,437 @@
+body{
+    display: flex;
+}
+
+.formularioschicos {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+}
+
+.btn-estandar {
+    padding: 10px;
+    background-color: #143361;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin: 5px;
+}
+
+.btn-estandar:hover {
+    background-color: #007bff;
+}
+
+.btn-estandartablas {
+    background-color: #143361;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-estandartablas:hover {
+    background-color: #007bff;
+}
+
+
+.titulo-estandar{
+    text-align: center;
+    color:#143361;
+}
+
+/* Nuevo contenedor para los botones de acción */
+.action-buttons {
+    display: flex; /* Hace que los botones se alineen en fila */
+    gap: 2px; /* Espacio entre los botones */
+}
+
+.action-button {
+    background: none; /* Sin fondo */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    font-size: 18px; /* Tamaño de la fuente */
+    display: inline-block; /* Ajusta el tamaño del botón al contenido */
+    padding: 2px; /* Padding mínimo para un tamaño reducido */
+    margin: 2px; /* Margen mínimo para evitar espacio adicional */
+    line-height: 1; /* Asegura que el botón no tenga altura extra */
+    height: auto; /* Permitir que el botón ajuste su altura al contenido */
+    width: fit-content; /* Ajusta el ancho al contenido */
+    min-width: 0; /* Permite que el ancho sea tan pequeño como sea necesario */
+    max-width: none; /* Sin límite superior al ancho */
+    transition: transform 0.2s ease; /* Transición suave para el hover */
+}
+
+.action-button:hover {
+    background-color: #143361;
+    transform: scale(1.1); /* Aumenta el tamaño al 110% */
+    background: none; /* Sin fondo */
+}
+
+.btn-eliminar-estandar{
+    padding: 10px;
+    margin: 5px;
+    background-color: rgb(100, 4, 4);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+   
+}
+
+.btn-eliminar-estandar:hover {
+    background-color: #ed0018;
+}
+
+/*Estilo para los campos*/
+.formulario-estandar input,
+.formulario-estandar select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    color: gray;
+    
+}
+
+.subtitulo-estandar{
+    color:#143361;
+}
+
+.estandar-container{
+    max-width: 1600px;
+    /* Limita el ancho máximo del formulario */
+    max-height: 900px;
+    /* Limita el ancho máximo del formulario */
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+.primerrenglon-estandar {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    /* Espacio entre los campos */
+
+}
+
+.primerrenglon-estandar div {
+    width: 48%;
+}
+
+/* Estilos para el contenedor del checkbox */
+.checkbox-estandar {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Estilos para la etiqueta */
+.checkbox-estandar label {
+    font-size: 16px;
+    color: gray;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Estilos para el checkbox */
+.checkbox-estandar input[type="checkbox"] {
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    accent-color: #143361; /* Cambia el color del checkbox en navegadores compatibles */
+}
+
+/* Efecto hover en el checkbox */
+.checkbox-estandar input[type="checkbox"]:hover {
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+input[type="checkbox"] {
+    /* Ocultar el estilo nativo */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  
+    /* Dimensiones */
+    width: 17px;
+    height: 17px;
+  
+    /* Estilo básico */
+    border: 2px solid #143361; /* Borde con el color deseado */
+    border-radius: 4px; /* Esquinas ligeramente redondeadas */
+    background-color: #fff; /* Fondo blanco */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    display: inline-block; /* Asegura el control de alineación */
+    transition: all 0.3s ease; /* Animación suave */
+  }
+  
+  input[type="checkbox"]:checked {
+    /* Estilo cuando está marcado */
+    background-color: #143361; /* Fondo con el color deseado */
+    border-color: #143361; /* Mantén el borde del mismo color */
+  }
+  
+  input[type="checkbox"]:checked::after {
+    /* Icono de check */
+    content: '✔'; /* Carácter de check */
+    color: white; /* Color del check */
+    font-size: 14px; /* Tamaño del texto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -3px; /* Ajuste fino para centrar */
+  }
+  /* Animación para el modal */
+@keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Estilos generales para el modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que esté sobre otros contenidos */
+  }
+  
+  /* Contenido del modal */
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 700px; /* Ajusta el tamaño según lo necesites */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.5s ease-out; /* Aparece desde arriba */
+  }
+  /* Estilo del scrollbar */
+.tabla-container::-webkit-scrollbar {
+    width: 10px; 
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+  
+.tabla-container::-webkit-scrollbar-thumb {
+    background-color: #143361;
+    border-radius: 5px;
+    border: 2px solid #f0f0f0;
+}
+  
+.tabla-container::-webkit-scrollbar-thumb:hover {
+    background-color: #4885e2;
+}
+  
+  /* Botón para cerrar el modal */
+  .closeModal {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 20px;
+  }
+ 
+
+  
+/* Contenedor de la tabla para permitir scroll solo al cuerpo */
+.contenedor-tabla-app {
+  max-height: 800px;
+  overflow-y: auto;
+  border-radius: 8px;
+  
+  min-height: 240px;
+}
+
+
+/* Scrollbar personalizado solo al contenedor */
+.contenedor-tabla-app::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.contenedor-tabla-app::-webkit-scrollbar-thumb {
+  background-color: #143361;
+  border-radius: 5px;
+  border: 2px solid #f0f0f0;
+}
+
+.contenedor-tabla-app::-webkit-scrollbar-thumb:hover {
+  background-color: #4885e2;
+}
+
+
+
+
+
+
+/* Tabla */
+.tabla-app2 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  border-collapse: collapse;
+  table-layout: auto;
+  width: 100%;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+}
+
+/* Encabezado fijo y sin separadores */
+.tabla-app2 thead {
+  position: sticky;
+  top: 0;
+  background-color: #143361;
+  z-index: 2;
+}
+
+.tabla-app2 th {
+  padding: 12px 15px;
+  text-align: left;
+  background-color: #143361;
+  color: white;
+  border: none;
+  /* quitar borde blanco */
+}
+
+/* Cuerpo de la tabla */
+.tabla-app2 tbody tr {
+  border-bottom: 1px solid #e1e1e1;
+  background-color: white;
+  transition: background 0.3s;
+}
+
+.tabla-app2 tbody tr:nth-child(even) {
+  background-color: #e9e9e9;
+}
+
+.tabla-app2 tbody tr:hover {
+  background-color: #bfbbce;
+}
+
+.tabla-app2 td {
+  padding: 12px 15px;
+  text-align: left;
+  color: #333;
+  background-color: transparent;
+  white-space: normal;      /* permite que el texto haga wrap */
+  word-break: break-word;    /* rompe palabras largas si es necesario */
+  overflow-wrap: anywhere;   /* asegura que cualquier palabra larga se ajuste */
+  border: none;
+}
+/* Limitar ancho de columnas específicas */
+.tabla-app2 td.tipo, .tabla-app2 th.tipo {
+  max-width: 20px;           /* ancho máximo para columna tipo */
+}
+
+.tabla-app2 td.pdf, .tabla-app2 th.pdf {
+  max-width: 10px;            /* ancho máximo para columna PDF */
+  text-align: center;
+}
+
+/* Tabla */
+.tabla-app {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  border-collapse: collapse;
+  table-layout: auto;
+  width: 100%;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+}
+
+/* Encabezado fijo y sin separadores */
+.tabla-app thead {
+  position: sticky;
+  top: 0;
+  background-color: #143361;
+  z-index: 2;
+}
+
+.tabla-app th {
+  padding: 12px 15px;
+  text-align: left;
+  background-color: #143361;
+  color: white;
+  border: none;
+  /* quitar borde blanco */
+}
+
+/* Cuerpo de la tabla */
+.tabla-app tbody tr {
+  border-bottom: 1px solid #e1e1e1;
+  background-color: white;
+  transition: background 0.3s;
+}
+
+.tabla-app tbody tr:nth-child(even) {
+  background-color: #e9e9e9;
+}
+
+.tabla-app tbody tr:hover {
+  background-color: #bfbbce;
+}
+
+.tabla-app td {
+  padding: 12px 15px;
+  text-align: left;
+  color: #333;
+  background-color: transparent;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border: none;
+}
+
+
+.Contenedor_Principal1 {
+    width: 100%;
+    /* Usa todo el ancho disponible */
+    height: 90vh;
+    /* Altura fija relativa a la ventana del navegador */
+    max-width: 100%;
+    /* Ajustamos el ancho máximo para que no exceda el ancho del viewport */
+    padding-left: 100px;
+    /* Espacio solo a la izquierda */
+    padding-right: 20px;
+    /* Espacio a la derecha */
+    margin: 0 auto;
+    /* Centra el contenedor horizontalmente, sin margen superior */
+    box-sizing: border-box;
+    /* Asegúrate de que el padding no afecte el ancho total */
+    overflow-y: auto;
+    /* Permitir desplazamiento si el contenido excede la altura */
+}
