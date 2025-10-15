@@ -30,11 +30,32 @@ const EscalaListaServicios = ({ id, closeModal }) => {
   const fetchServiciosModal = async () => {
     try {
       console.log(idEscala);
-      const response = await axios.get(`${environment.API_URL}obtenerserviciosescala?escalaId=${idEscala}`);
+      const response = await axios.get(
+        `${environment.API_URL}obtenerserviciosescala?escalaId=${idEscala}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       console.log('log en modal', response.data);
       setServiciosModal(response.data);
-      const responsefacturas = await axios.get(`${environment.API_URL}viewescalafacturas/${idEscala}`);
-      const responseservicios = await axios.get(`${environment.API_URL}obtenerserviciosfacturas`);
+      const responsefacturas = await axios.get(
+        `${environment.API_URL}viewescalafacturas/${idEscala}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const responseservicios = await axios.get(
+        `${environment.API_URL}obtenerserviciosfacturas`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       // Crear un conjunto de IDs de facturas para comparación rápida
       const facturasIds = new Set(responsefacturas.data.map(factura => Number(factura.idfacturas)));
@@ -59,7 +80,12 @@ const EscalaListaServicios = ({ id, closeModal }) => {
     try {
       const response = await axios.post(
         `${environment.API_URL}escalas/agregarservicio`,
-        { idEscala, servicio }
+        { idEscala, servicio },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       console.log('Servicio agregado:', response.data); // Asegúrate de verificar la respuesta
       setServicioModal('');
@@ -71,7 +97,14 @@ const EscalaListaServicios = ({ id, closeModal }) => {
   };
   const handleEliminarServicio = async (idServicio) => {
     try {
-      const response = await axios.delete(`${environment.API_URL}escalas/eliminarservicio/${idServicio}`);
+      const response = await axios.delete(
+        `${environment.API_URL}escalas/eliminarservicio/${idServicio}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       console.log(response.data);  // Verifica la respuesta del servidor
       fetchServiciosModal();
     } catch (error) {
@@ -94,9 +127,9 @@ const EscalaListaServicios = ({ id, closeModal }) => {
   return (
     <div className="modal-servicios">
       <div className='titulo-container'>
-	  <h1 className='titulo' >Servicios</h1>
-      		<button onClick={closeModal} className='logout-button'>Volver</button>
-	  </div>
+        <h1 className='titulo' >Servicios</h1>
+        <button onClick={closeModal} className='logout-button'>Volver</button>
+      </div>
 
       <div className='table-container'>
         <form onSubmit={handleAgregarServicio} >

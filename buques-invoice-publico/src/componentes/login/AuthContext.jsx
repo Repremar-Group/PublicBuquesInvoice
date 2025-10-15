@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -6,22 +6,34 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
+  // ✅ Al iniciar, recuperar sesión guardada (si existe)
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
+    if (savedToken && savedUser) {
+      setToken(savedToken);
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
   const login = (newToken, userData) => {
     setToken(newToken);
     setUser(userData);
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
-   
-  setToken(null);
-  setUser(null);
 
-  
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
+    setToken(null);
+    setUser(null);
 
-  
-  window.location.reload();
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+
+    window.location.reload();
   };
 
   const isAuthenticated = () => {

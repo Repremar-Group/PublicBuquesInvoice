@@ -25,6 +25,7 @@ export default function LoginMicrosoft() {
         const response = await msalInstance.handleRedirectPromise();
 
         if (response) {
+          console.log("🟢 Token Microsoft recibido:", response);
           const idToken = response.idToken;
 
           try {
@@ -35,6 +36,7 @@ export default function LoginMicrosoft() {
             );
             const data = backendRes.data;
             login(data.token, data.user); // guarda token y user
+            localStorage.setItem("token", data.token);
             navigate("/"); // redirige a home después de login
           } catch (err) {
             console.error("Error backend:", err);

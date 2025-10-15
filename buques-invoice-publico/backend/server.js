@@ -11,7 +11,7 @@ const Busboy = require('busboy');
 const argon2 = require('argon2');
 const jwksClient = require('jwks-rsa');
 const app = express();
-const JWT_SECRET = "mi_clave_secreta";
+const JWT_SECRET = "R3pr3m4r2025.!-";
 
 
 const client = jwksClient({
@@ -55,8 +55,6 @@ const fs = require('fs');
 
 
 const allowedOrigins = [
-  "https://localhost:80",
-  "https://localhost",
   "https://4.228.216.11",
   "https://4.228.216.11:80",
   "https://buquesinvoiceprod.brazilsouth.cloudapp.azure.com",
@@ -77,7 +75,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.url}`);
@@ -110,7 +107,7 @@ const poolItinerarios = mysql2.createPool({
   connectTimeout: 60000, // Tiempo máximo para conectar
   idleTimeout: 30000,   // Cerrar conexiones inactivas después de 30 segundos
 });
-
+app.use("/api", verificarToken);
 // Función para verificar el estado de cada pool
 const monitorPool = (pool, name) => {
   setInterval(async () => {
@@ -151,7 +148,7 @@ poolItinerarios.on('release', (connection) => {
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Login de usuario (verifica hash con argon2)
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', verificarToken, async (req, res) => {
   try {
     const { usuario, password } = req.body;
 
@@ -200,7 +197,7 @@ app.post('/api/auth/login', async (req, res) => {
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //Endpoint para obtener una sola factura.
 // Endpoint para obtener los detalles de una factura
-app.get('/api/obtenerfactura/:id', async (req, res) => {
+app.get('/api/obtenerfactura/:id',verificarToken, async (req, res) => {
   console.log('Solicitud recibida en el endpoint /api/obtenerfactura/:id');
   const { id } = req.params;
   console.log(`ID recibido en el endpoint: ${id}`);
@@ -230,7 +227,7 @@ app.get('/api/obtenerfactura/:id', async (req, res) => {
 
 // Endpoint para insertar datos de la factura
 // Endpoint para insertar datos de la factura
-app.post('/api/insertardatosfactura', async (req, res) => {
+app.post('/api/insertardatosfactura',verificarToken, async (req, res) => {
   console.log("Datos recibidos:", req.body);  // Verificar los datos que llegan
 
   const { numero, fecha, moneda, monto, escala_asociada, proveedor, url_factura, url_notacredito, estado, gia, pre_aprobado, servicios } = req.body;
@@ -294,7 +291,7 @@ app.post('/api/insertardatosfactura', async (req, res) => {
 
 
 //Endpoint para buscar servicios asociados a una escala
-app.get('/api/obtenerserviciosescala', async (req, res) => {
+app.get('/api/obtenerserviciosescala',verificarToken, async (req, res) => {
   const escalaId = req.query.escalaId; // Obtiene el id de la escala desde los parámetros de la query
   console.log('Received request for /api/obtenerserviciosescala');
   console.log('escalaId recibido:', escalaId); // Asegúrate de que el ID es correcto
@@ -327,7 +324,7 @@ app.get('/api/obtenerserviciosescala', async (req, res) => {
 });
 
 // Endpoint para buscar proveedores
-app.get('/api/obtenerproveedor', async (req, res) => {
+app.get('/api/obtenerproveedor',verificarToken, async (req, res) => {
   const search = req.query.search;
 
   // Verificar si se ha proporcionado un término de búsqueda
@@ -359,7 +356,7 @@ app.get('/api/obtenerproveedor', async (req, res) => {
 
 
 //Endpoint para obtener el listado de facturas 
-app.get('/api/previewfacturas', async (req, res) => {
+app.get('/api/previewfacturas',verificarToken, async (req, res) => {
   // Consulta SQL para obtener las facturas y sus datos relacionados
   const query = `
   SELECT 
@@ -390,7 +387,7 @@ app.get('/api/previewfacturas', async (req, res) => {
 });
 
 // Endpoint para obtener servicios de facturas
-app.get('/api/obtenerserviciosfacturas', async (req, res) => {
+app.get('/api/obtenerserviciosfacturas',verificarToken, async (req, res) => {
   try {
     // Obtener la conexión del pool de buquesinvoice
     const connectionBuques = await poolBuquesInvoice.getConnection();
@@ -422,7 +419,7 @@ app.get('/api/obtenerserviciosfacturas', async (req, res) => {
 
 
 // Endpoint para obtener todas las escalas que coincidan con lo buscado en agragar factura
-app.get('/api/buscarescalaasociada', async (req, res) => {
+app.get('/api/buscarescalaasociada',verificarToken, async (req, res) => {
   const searchTerm = req.query.searchTermEscalaAsociada || ''; // Obtenemos el término de búsqueda desde la query string
 
   // Consulta SQL con JOINs para obtener todos los datos de cada tabla relacionada, filtrado por buque
@@ -469,7 +466,7 @@ ORDER BY itinerarios.eta DESC;
 
 
 // Endpoint para obtener todos los itinerarios con sus datos relacionados
-app.get('/api/previewescalas', async (req, res) => {
+app.get('/api/previewescalas', verificarToken, async (req, res) => {
   // Consulta SQL con JOINs para obtener todos los datos de cada tabla relacionada
   const query = `
     SELECT 
@@ -512,7 +509,7 @@ app.get('/', (req, res) => {
 });
 
 // Endpoint para obtener todos los itinerarios con sus datos relacionados
-app.get('/api/previewescalas', async (req, res) => {
+app.get('/api/previewescalas', verificarToken, async (req, res) => {
   // Consulta SQL con JOINs para obtener todos los datos de cada tabla relacionada
   const query = `
     SELECT
@@ -545,7 +542,7 @@ app.get('/api/previewescalas', async (req, res) => {
 });
 
 //Endpoint para buscar servicios asociados a una escala
-app.get('/api/obtenerserviciosescala', async (req, res) => {
+app.get('/api/obtenerserviciosescala', verificarToken, async (req, res) => {
   const escalaId = req.query.escalaId; // Obtiene el id de la escala desde los parámetros de la query
   console.log('Received request for /api/obtenerserviciosescala');
   console.log('escalaId recibido:', escalaId); // Asegúrate de que el ID es correcto
@@ -577,7 +574,7 @@ app.get('/api/obtenerserviciosescala', async (req, res) => {
   }
 });
 
-app.get('/api/obtenerserviciospuertos/:puertos', async (req, res) => {
+app.get('/api/obtenerserviciospuertos/:puertos',verificarToken, async (req, res) => {
   const puertoId = req.params.puertos;
   console.log('Puerto ID recibido:', puertoId); // Asegúrate de que se imprime el valor correcto
   const query = `
@@ -609,7 +606,7 @@ app.get('/api/obtenerserviciospuertos/:puertos', async (req, res) => {
   }
 });
 
-app.post('/api/insertserviciospuertos', async (req, res) => {
+app.post('/api/insertserviciospuertos',verificarToken, async (req, res) => {
   console.log('Cuerpo de la solicitud:', req.body);  // Verificar el contenido
   const servicios = req.body.servicios;
 
@@ -650,7 +647,7 @@ app.post('/api/insertserviciospuertos', async (req, res) => {
   }
 });
 
-app.get('/api/viewescalafacturas/:id', async (req, res) => {
+app.get('/api/viewescalafacturas/:id',verificarToken, async (req, res) => {
   const escalaId = req.params.id;
   console.log(`Escala ID recibido: ${escalaId}`); // Verifica el ID recibido
 
@@ -698,7 +695,7 @@ app.get('/api/viewescalafacturas/:id', async (req, res) => {
 });
 
 // Endpoint para obtener servicios de facturas
-app.get('/api/obtenerserviciosfacturas', async (req, res) => {
+app.get('/api/obtenerserviciosfacturas',verificarToken, async (req, res) => {
   try {
     // Obtener la conexión del pool de buquesinvoice
     const connectionBuques = await poolBuquesInvoice.getConnection();
@@ -726,7 +723,7 @@ app.get('/api/obtenerserviciosfacturas', async (req, res) => {
 });
 
 // Endpoint para agregar un servicio a una escala
-app.post('/api/escalas/agregarservicio', async (req, res) => {
+app.post('/api/escalas/agregarservicio',verificarToken, async (req, res) => {
   const { idEscala, servicio } = req.body;  // Obtiene id de la escala y el servicio desde el cuerpo de la solicitud
   console.log('Datos recibidos en el backend:', req.body); // Inspecciona los datos
 
@@ -793,8 +790,26 @@ console.log("/api/auth/microsoft");
     if (connection) connection.release();
   }
 });
+
+function verificarToken(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ error: "Token no proporcionado" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded; // guardamos el usuario en req.user
+    next();
+  } catch (err) {
+    console.error("Error verificando token:", err);
+    return res.status(403).json({ error: "Token inválido o expirado" });
+  }
+}
 // Endpoint para eliminar servicio en escala
-app.delete('/api/escalas/eliminarservicio/:idservicio', async (req, res) => {
+app.delete('/api/escalas/eliminarservicio/:idservicio',verificarToken, async (req, res) => {
   const { idservicio } = req.params; // Usando req.params para obtener el parámetro de la ruta
 
   if (!idservicio) {

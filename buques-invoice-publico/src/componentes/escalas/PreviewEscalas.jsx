@@ -32,7 +32,11 @@ const PreviewEscalas = () => {
     }
     const fetchEscalas = async () => {
       try {
-        const response = await axios.get(`${environment.API_URL}previewescalas`);
+        const response = await axios.get(`${environment.API_URL}previewescalas`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setEscalas(response.data);
       } catch (err) {
         console.error('Error al obtener las escalas:', err);
@@ -53,14 +57,36 @@ const PreviewEscalas = () => {
 
     const fetchServicios = async () => {
       try {
-        const response = await axios.get(`${environment.API_URL}obtenerserviciosescala?escalaId=${escalaId}`);
+        const response = await axios.get(
+          `${environment.API_URL}obtenerserviciosescala?escalaId=${escalaId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (response.data.length === 0) {
-          const response1 = await axios.get(`${environment.API_URL}obtenerserviciospuertos/${idPuerto}`);
+          const response1 = await axios.get(
+            `${environment.API_URL}obtenerserviciospuertos/${idPuerto}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
           const serviciosTransformados = response1.data.map(servicio => ({
             nombre: servicio.nombre,
             idescala: escalaId
           }));
-          await axios.post(`${environment.API_URL}insertserviciospuertos`, { servicios: serviciosTransformados });
+          await axios.post(
+            `${environment.API_URL}insertserviciospuertos`,
+            { servicios: serviciosTransformados },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
         }
       } catch (error) {
         console.error('Error al obtener servicios:', error);
