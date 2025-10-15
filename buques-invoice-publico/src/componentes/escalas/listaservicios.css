@@ -80,6 +80,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; /* agrega "..." si el texto es muy largo */
+    color: black;
 }
 
 

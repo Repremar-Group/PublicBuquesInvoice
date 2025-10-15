@@ -54,11 +54,30 @@ const { PDFDocument, rgb, degrees, StandardFonts } = require('pdf-lib');
 const fs = require('fs');
 
 
+const allowedOrigins = [
+  "https://localhost:80",
+  "https://localhost",
+  "https://4.228.216.11",
+  "https://4.228.216.11:80",
+  "https://buquesinvoiceprod.brazilsouth.cloudapp.azure.com",
+];
+
 const corsOptions = {
-  origin: "http://localhost:80", // tu frontend
-  credentials: true,               // permitir cookies
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (Postman, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log("❌ Bloqueado por CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // permitir envío de cookies o cabeceras de autenticación
 };
+
 app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use((req, res, next) => {
   console.log(`Solicitud recibida: ${req.method} ${req.url}`);
@@ -740,7 +759,8 @@ app.post('/api/escalas/agregarservicio', async (req, res) => {
 });
 
 app.post("/api/auth/microsoft", async (req, res) => {
-  let connection;
+console.log("/api/auth/microsoft");
+	let connection;
   try {
     const { token } = req.body;
     if (!token) return res.status(400).json({ error: "Token faltante" });

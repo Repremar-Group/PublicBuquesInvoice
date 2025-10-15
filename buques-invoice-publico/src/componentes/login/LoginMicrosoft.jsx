@@ -1,62 +1,76 @@
 import React, { useEffect, useState } from "react";
 import { PublicClientApplication } from "@azure/msal-browser";
-import { msalConfig, loginRequest } from "./AuthConfig";
+import { msalConfig, loginRequest, msalInstance } from "./AuthConfig";
 import axios from "axios";
+import logo from './LogoRepremar.png';
 import { useAuth } from "./AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { environment } from '../../environment';
+import { useNavigate } from "react-router-dom";
+import './LoginForm.css';
 
-const msalInstance = new PublicClientApplication(msalConfig);
+export default function LoginMicrosoft() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-export default function LoginMicrosoft({ onSuccess }) {
-    const { login } = useAuth();
-    const [initialized, setInitialized] = useState(false);
+  // Maneja la redirección de MSAL al volver de Microsoft
     useEffect(() => {
-        async function init() {
-            await msalInstance.initialize();
-            setInitialized(true);
-        }
-        init();
-    }, []);
+    async function initMSAL() {
+      try {
+        // Inicializa MSAL
+        await msalInstance.initialize();
 
-    const handleMicrosoftLogin = async () => {
-        if (!initialized) {
-            alert("MSAL aún no está inicializado, intenta de nuevo en un momento");
-            return;
-        }
+        // Maneja la respuesta del redirect
+        const response = await msalInstance.handleRedirectPromise();
 
-        try {
-            const response = await msalInstance.loginPopup(loginRequest);
-            const idToken = response.idToken;
+        if (response) {
+          const idToken = response.idToken;
 
-            // Usando axios
+          try {
             const backendRes = await axios.post(
-                "http://localhost:5000/api/auth/microsoft",
-                { token: idToken },
-                { withCredentials: true } // si tu backend usa cookies
+              `${environment.API_URL}auth/microsoft`,
+              { token: idToken },
+              { withCredentials: true }
             );
-
             const data = backendRes.data;
-            login(data.token, data.user);
-        } catch (err) {
-            console.error("Error en login Microsoft:", err);
+            login(data.token, data.user); // guarda token y user
+            navigate("/"); // redirige a home después de login
+          } catch (err) {
+            console.error("Error backend:", err);
             Swal.fire({
-                icon: "error",
-                title: "Autenticación fallida",
-                text: "No se pudo autenticar con Microsoft",
+              icon: "error",
+              title: "Error en backend",
+              text: "No se pudo autenticar con el backend",
             });
+          }
         }
-    };
+      } catch (err) {
+        console.error("Error MSAL redirect:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Autenticación fallida",
+          text: "No se pudo completar el login con Microsoft",
+        });
+      }
+    }
 
-    return (
-        <div>
-            <button className="btn-estandar"
-                onClick={handleMicrosoftLogin}
+    initMSAL();
+  }, [login, navigate]);
 
-            >
-                Acceder
-            </button>
-        </div>
+  const handleMicrosoftLogin = () => {
+    msalInstance.loginRedirect(loginRequest);
+  };
 
-    );
+  return (
+    <div className='formularioschicos'>
+	  <div className='Login'>
+        <img src={logo} alt="Logo Cielosur" style={{ marginBottom: "20px" }} />
+        <button className="btn-estandar" onClick={handleMicrosoftLogin}>
+        Acceder
+      </button>
+        <ToastContainer />
+      </div>
+    </div>
+  );
 }

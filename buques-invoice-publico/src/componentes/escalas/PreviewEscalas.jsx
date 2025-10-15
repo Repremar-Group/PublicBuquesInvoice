@@ -86,7 +86,7 @@ const PreviewEscalas = () => {
     <div className="preview-escalas">
       <div className="titulo-container">
         <h1 className="titulo">Escalas</h1>
-        <button onClick={handleLogout} className='logout-button'>⏻</button>
+        <button onClick={handleLogout} className='logout-button'>Salir</button>
       </div>
       <input
         className="input-buscar"

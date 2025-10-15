@@ -93,7 +93,10 @@ const EscalaListaServicios = ({ id, closeModal }) => {
 
   return (
     <div className="modal-servicios">
-      <div className='titulo-estandar'><h1>Servicios</h1></div>
+      <div className='titulo-container'>
+	  <h1 className='titulo' >Servicios</h1>
+      		<button onClick={closeModal} className='logout-button'>Volver</button>
+	  </div>
 
       <div className='table-container'>
         <form onSubmit={handleAgregarServicio} >

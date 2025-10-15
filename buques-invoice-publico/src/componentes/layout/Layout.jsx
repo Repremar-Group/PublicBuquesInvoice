@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import LoginForm from "../login/LoginForm";
+import LoginMicrosoft from "../login/LoginMicrosoft";
 import { useAuth } from "../login/AuthContext";
 import PreviewEscalas from "../escalas/PreviewEscalas";
 
@@ -16,7 +16,7 @@ function Layout() {
       />
 
      {/* Login */}
-      <Route path="/login" element={loggedIn ? <Navigate to="/escalas" /> : <LoginForm />} />
+      <Route path="/login" element={loggedIn ? <Navigate to="/escalas" /> : <LoginMicrosoft />} />
 
       {/* Página principal del portal */}
       <Route
